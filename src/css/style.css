@@ -19,10 +19,10 @@ body {
   }
   
   .logo {
-    width: 15px;
+    width: 30px;
     height: 5px;
     background-color: white;
-    animation: spin 2s linear infinite;
+    animation: spin 3s linear infinite;
     margin-right: 10px;
   }
   
