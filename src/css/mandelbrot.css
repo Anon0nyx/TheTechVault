@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: rgb(60,63,77);
 }
 
 h1 {
@@ -9,4 +9,14 @@ h1 {
 
 canvas {
     border: 2px solid black;
+    background-color: black;
   }
+
+input, textarea, button {
+  text-align: center;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+}
+

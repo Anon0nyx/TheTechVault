@@ -16,10 +16,13 @@
                 <a href="#empty" class="nav-link">Services</a>
             </div>
         </nav>
-        <h1>Mandelbrot Set Visualization, 500 Iterations</h1>
-        <canvas id="mandelbrotCanvas" width="1390" height="1080">
-              Error Occurring
-        </canvas>
+        <h1>Mandelbrot Set Visualization, 5000 Iterations</h1>
+        <div width="100%">
+            <canvas id="mandelbrotCanvas" width="1400" height="1000">
+                Error Occurring
+            </canvas>
+        </div>
+        <input type="button" onclick="location.reload()" value="Reset Fractal" />
         <script src="./src/js/mandelbrot.js"></script>
     </body>
 </html>

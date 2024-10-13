@@ -1,41 +1,79 @@
 const canvas = document.getElementById('mandelbrotCanvas');
 const ctx = canvas.getContext('2d');
 
-const maxIterations = 500;
-let zoomLevel = 200;
+let maxIterations = 5000;
+let zoomLevel = 300;
 let offsetX = canvas.width / 2;
 let offsetY = canvas.height / 2;
 
 let startX, startY, endX, endY, isDragging = false;
+let imageData; // Store the Mandelbrot set image
 
 function drawMandelbrot() {
-  const imageData = ctx.createImageData(canvas.width, canvas.height);
+  imageData = ctx.createImageData(canvas.width, canvas.height);
   const data = imageData.data;
 
-  for (let x = 0; x < canvas.width; x++) {
-    for (let y = 0; y < canvas.height; y++) {
-      const cx = (x - offsetX) / zoomLevel;
-      const cy = (y - offsetY) / zoomLevel;
-      let zx = 0, zy = 0;
-      let iteration = 0;
+  let chunkX = 0;
+  let chunkY = 0;
+  const chunkSize = 50;
 
-      while (zx * zx + zy * zy < 4 && iteration < maxIterations) {
-        const xtemp = zx * zx - zy * zy + cx;
-        zy = 2 * zx * zy + cy;
-        zx = xtemp;
-        iteration++;
+  function renderChunk() {
+    for (let x = chunkX; x < chunkX + chunkSize && x < canvas.width; x++) {
+      for (let y = chunkY; y < chunkY + chunkSize && y < canvas.height; y++) {
+        const cx = (x - offsetX) / zoomLevel;
+        const cy = (y - offsetY) / zoomLevel;
+        let zx = 0, zy = 0;
+        let iteration = 0;
+
+        while (zx * zx + zy * zy < 4 && iteration < maxIterations) {
+          const xtemp = zx * zx - zy * zy + cx;
+          zy = 2 * zx * zy + cy;
+          zx = xtemp;
+          iteration++;
+        }
+
+        //const color = iteration === maxIterations ? 0 : 255;
+        //const color = iteration === maxIterations ? 0 : 255 - Math.floor((iteration / maxIterations) * 255);
+        const color = iteration === maxIterations ? 0 : (iteration / maxIterations) * 255; // best visual
+
+        const pixelIndex = (y * canvas.width + x) * 4; // Universal line for getting the index of any pixel (x,y)'s RBGA array
+        data[pixelIndex] = color;
+        /*
+        data[pixelIndex + 1] = color; // This version gets rid of any extra colors, keeps it black/white
+        data[pixelIndex + 2] = color;
+        data[pixelIndex + 3] = 255;
+        */
+        data[pixelIndex] = color % 256;            // Red
+        data[pixelIndex + 1] = (color * 3) % 256;  // Green
+        data[pixelIndex + 2] = (color * 7) % 256;  // Blue
+        data[pixelIndex + 3] = 255;                // Alpha
       }
+    }
 
-      const color = iteration === maxIterations ? 0 : iteration * 16;
-      const pixelIndex = (y * canvas.width + x) * 4;
-      data[pixelIndex] = color % 256;          
-      data[pixelIndex + 1] = (color * 3) % 256; 
-      data[pixelIndex + 2] = (color * 7) % 256; 
-      data[pixelIndex + 3] = 255;               
+    chunkX += chunkSize;
+    if (chunkX >= canvas.width) {
+      chunkX = 0;
+      chunkY += chunkSize;
+    }
+
+    if (chunkY < canvas.height) {
+      ctx.putImageData(imageData, 0, 0);
+      requestAnimationFrame(renderChunk);
+    } else {
+      ctx.putImageData(imageData, 0, 0);
     }
   }
 
-  ctx.putImageData(imageData, 0, 0);
+  renderChunk();
+}
+
+function drawSelectionBox() {
+  ctx.putImageData(imageData, 0, 0); // Draw the stored Mandelbrot set image
+  if (isDragging) {
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+  }
 }
 
 canvas.addEventListener('mousedown', (event) => {
@@ -48,12 +86,7 @@ canvas.addEventListener('mousemove', (event) => {
   if (isDragging) {
     endX = event.offsetX;
     endY = event.offsetY;
-
-    ctx.putImageData(ctx.createImageData(canvas.width, canvas.height), 0, 0);  // clear the canvas
-    drawMandelbrot();
-    ctx.strokeStyle = 'red';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(startX, startY, endX - startX, endY - startY); // Draw selection rectangle
+    drawSelectionBox();
   }
 });
 
@@ -77,8 +110,17 @@ canvas.addEventListener('mouseup', (event) => {
     offsetY = centerY - ((centerY - offsetY) * newZoomLevel / zoomLevel);
 
     zoomLevel = newZoomLevel;
+    maxIterations = Math.min(1000, zoomLevel / 10);
     drawMandelbrot();
   }
 });
+
+function resetMandelbrot() {
+  zoomLevel = 200;
+  offsetX = canvas.width / 2;
+  offsetY = canvas.height / 2;
+  maxIterations = 1000;
+  drawMandelbrot();
+}
 
 drawMandelbrot();
