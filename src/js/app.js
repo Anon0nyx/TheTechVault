@@ -6,8 +6,8 @@ window.addEventListener("hashchange", (event) => {
 		case "#gol":
 			window.location = "./game_of_life.html";
 			break;
-		case "#empty":
-			console.log("Empty selected");
+		case "#mandelbrot":
+			window.location = "./mandelbrot.html";
 			break;
 		default:
 			console.log("Page Not Found");

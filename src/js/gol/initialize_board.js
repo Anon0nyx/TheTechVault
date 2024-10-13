@@ -60,6 +60,7 @@ function prepareGameOfLife() {
 
   // Create the object grid for the game
   gameOfLife = GameOfLife(canvas.width / sqSz, canvas.height / sqSz);
+  console.log(gameOfLife);
   generationNumberSpan = document.getElementById('generation');
 
   drawLines();
