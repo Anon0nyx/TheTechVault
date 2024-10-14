@@ -1,18 +1,22 @@
+// Gather our canvas and the necessary 2d context for rendering
 const canvas = document.getElementById('mandelbrotCanvas');
-const ctx = canvas.getContext('2d');
+const canvasContext = canvas.getContext('2d');
 
-let maxIterations = 5000;
-let zoomLevel = 300;
+// establish some file-wide variables
+let maxIterations = 1000;
+let zoomLevel = 350;
 let offsetX = canvas.width / 2;
 let offsetY = canvas.height / 2;
 
 let startX, startY, endX, endY, isDragging = false;
 let imageData; // Store the Mandelbrot set image
 
+// This is our mandelbrot function, this is where we visualize the math through each pixel point
 function drawMandelbrot() {
-  imageData = ctx.createImageData(canvas.width, canvas.height);
-  const data = imageData.data;
+  imageData = canvasContext.createImageData(canvas.width, canvas.height); 
+  const data = imageData.data; // Prepare our canvas for pixel manipulation
 
+  // Define our chunk size and variables
   let chunkX = 0;
   let chunkY = 0;
   const chunkSize = 50;
@@ -25,7 +29,7 @@ function drawMandelbrot() {
         let zx = 0, zy = 0;
         let iteration = 0;
 
-        while (zx * zx + zy * zy < 4 && iteration < maxIterations) {
+        while (zx * zx + zy * zy < 4 && iteration < maxIterations) { // Perform the mandelbrot set calculation iterations
           const xtemp = zx * zx - zy * zy + cx;
           zy = 2 * zx * zy + cy;
           zx = xtemp;
@@ -50,17 +54,17 @@ function drawMandelbrot() {
       }
     }
 
-    chunkX += chunkSize;
-    if (chunkX >= canvas.width) {
+    chunkX += chunkSize; // This is what moves our chunk across the page
+    if (chunkX >= canvas.width) { // And this logic is what resets that after the chunks reach the end of the page
       chunkX = 0;
       chunkY += chunkSize;
     }
 
-    if (chunkY < canvas.height) {
-      ctx.putImageData(imageData, 0, 0);
-      requestAnimationFrame(renderChunk);
-    } else {
-      ctx.putImageData(imageData, 0, 0);
+    if (chunkY < canvas.height) { // Recursively check to see if we have filled the canvas yet
+      canvasContext.putImageData(imageData, 0, 0); // If we arent done, put the current chunk 
+      requestAnimationFrame(renderChunk); // and move onto the next chunk
+    } else { // Otherwise
+      canvasContext.putImageData(imageData, 0, 0); // Just print the last chunk
     }
   }
 
@@ -68,11 +72,11 @@ function drawMandelbrot() {
 }
 
 function drawSelectionBox() {
-  ctx.putImageData(imageData, 0, 0); // Draw the stored Mandelbrot set image
+  canvasContext.putImageData(imageData, 0, 0); // Draw the stored Mandelbrot set image
   if (isDragging) {
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+    canvasContext.strokeStyle = 'red';
+    canvasContext.lineWidth = 1;
+    canvasContext.strokeRect(startX, startY, endX - startX, endY - startY);
   }
 }
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptographic Algorithm Simulator</title>
+    <link rel="stylesheet" href="./src/css/crypto_visual.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cryptographic Algorithm Simulator</h1>
+        
+        <div class="section">
+            <h2>RSA Algorithm</h2>
+            <input type="text" id="rsaInput" placeholder="Enter plaintext">
+            <button onclick="generateRSAKeys()">Generate Keys</button>
+            <button onclick="rsaEncrypt()">Encrypt</button>
+            <button onclick="rsaDecrypt()">Decrypt</button>
+            <p id="rsaOutput"></p>
+        </div>
+        
+        <div class="section">
+            <h2>AES Algorithm</h2>
+            <input type="text" id="aesInput" placeholder="Enter plaintext">
+            <button onclick="aesEncrypt()">Encrypt</button>
+            <button onclick="aesDecrypt()">Decrypt</button>
+            <p id="aesOutput"></p>
+        </div>
+        
+        <div class="section">
+            <h2>Diffie-Hellman Key Exchange</h2>
+            <button onclick="diffieHellman()">Generate Shared Secret</button>
+            <p id="dhOutput"></p>
+        </div>
+        
+        <div class="section">
+            <h2>Visualization</h2>
+            <canvas id="visualizationCanvas" width="800" height="400"></canvas>
+        </div>
+    </div>
+    
+    <script src="./src/js/diffie_hellman.js"></script>
+</body>
+</html>
