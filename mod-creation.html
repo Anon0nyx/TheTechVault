@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mod Creation - Retro Modding App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mod-creation.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Retro Modding App</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#tutorials">Tutorials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="mod-creation">
+            <h2>Create Your Minecraft Mod</h2>
+            <div class="editor-container">
+                <textarea id="code-editor" placeholder="Write your mod code here..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="mod-name">Mod Name:</label>
+                <input type="text" id="mod-name" name="mod-name" required>
+            </div>
+            <div class="form-group">
+                <label for="mod-description">Description:</label>
+                <textarea id="mod-description" name="mod-description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="mod-category">Category:</label>
+                <select id="mod-category" name="mod-category" required>
+                    <option value="gameplay">Gameplay</option>
+                    <option value="graphics">Graphics</option>
+                    <option value="tools">Tools</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Submit Mod</button>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Retro Modding App. All rights reserved.</p>
+    </footer>
+    <script src="mod-creation.js"></script>
+</body>
+</html>
