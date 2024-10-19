@@ -12,6 +12,6 @@ int main() {
     for (const std::string& word: msg) {
         std::cout << word << " ";
     }
-    std::cout << std::endl; // Dont end the line until the string is finished printing
+    std::cout << std::endl; // Dont end the line until the string is finished printing./h
     return 0;
 }

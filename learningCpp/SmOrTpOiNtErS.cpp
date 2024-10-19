@@ -12,7 +12,7 @@ int smort_pointer() {
   cout << "Shared ptr val: " << *sptr1 << endl;
   cout << "Shared ptr use count: " << sptr1.use_count() << endl; // YEAH I FUCKING LOVE (HATE) SNAKE CASE AND BEING FORCED TO USE IT!!!!
 
-  // alright boys thank you for cleaning up the memory time to exit this scope 
+  // alright boys thank you for cleaning up the memory, time to exit this scope 
   // WOO NO CLEANUP!! WOOO
   return 0;
 }
@@ -37,5 +37,5 @@ Alright, less hate, more learning...
 
   Notes:
   For real though smart pointers kind of fucking suck and its genuinely more likely that 
-  cleaning up after yourself, assuming you arent dull, is more efficient than using "smart" pointers
+  cleaning up after yourself, assuming you arent dull, is more efficient than using "smart" pointersX
 */
