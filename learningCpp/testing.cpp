@@ -3,6 +3,7 @@
 ** Harish R
 */
 #include<iostream>
+#include <vector>
 using namespace std;
 
 class BST {
@@ -14,7 +15,7 @@ class BST {
     };
 
     node* root;
-
+/*
     node* makeEmpty(node* t) {
         if(t == NULL)
             return NULL;
@@ -25,7 +26,7 @@ class BST {
         }
         return NULL;
     }
-
+*/
     node* insert(int x, node* t)
     {
         if(t == NULL)
@@ -40,7 +41,7 @@ class BST {
             t->right = insert(x, t->right);
         return t;
     }
-
+/*
     node* findMin(node* t)
     {
         if(t == NULL)
@@ -86,7 +87,7 @@ class BST {
 
         return t;
     }
-
+*/
     void inorder(node* t) {
         if(t == NULL)
             return;
@@ -94,7 +95,7 @@ class BST {
         cout << t->data << " ";
         inorder(t->right);
     }
-
+/*
     node* find(node* t, int x) {
         if(t == NULL)
             return NULL;
@@ -105,37 +106,38 @@ class BST {
         else
             return t;
     }
-
+*/
 public:
     BST() {
         root = NULL;
     }
 
-    ~BST() {
-        root = makeEmpty(root);
-    }
+   // ~BST() {
+     //   root = makeEmpty(root);
+   // }
 
     void insert(int x) {
         root = insert(x, root);
     }
 
-    void remove(int x) {
-        root = remove(x, root);
-    }
+//    void remove(int x) {
+//        root = remove(x, root);
+//    }
 
     void display() {
         inorder(root);
         cout << endl;
     }
 
-    void search(int x) {
-        root = find(root, x);
-    }
+//    void search(int x) {
+//        root = find(root, x);
+//   }
 };
 
 int main() {
     BST t;
-    t.insert(20);
+    /*
+		t.insert(20);
     t.insert(25);
     t.insert(15);
     t.insert(10);
@@ -147,5 +149,14 @@ int main() {
     t.display();
     t.remove(30);
     t.display();
-    return 0; 
+    */
+		vector<int> testArray = {20,25,15,10,30};
+		for (int i=0;i<5;i++) {
+			t.insert(testArray[i]);
+		}
+
+		t.display();
+
+
+		return 0; 
 }

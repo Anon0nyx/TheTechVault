@@ -1,10 +1,10 @@
 #include<iostream>
 #include <vector>
 
-class BinarySearchTree {
+class BST {
 
 struct node {
-	int value;
+	int data;
 	node* left;
 	node* right;
 };
@@ -13,11 +13,11 @@ struct node {
 	node* insert(int var, node* tree) {
 	if(tree == NULL) {
 		tree = new node;
-		tree->value = var;
+		tree->data = var;
 		tree->left = tree->right = NULL;
-	} else if(var < tree->value)
+	} else if(var < tree->data)
 		tree->left = insert(var, tree->left);
-	else if(var > tree->value)
+	else if(var > tree->data)
 		tree->right = insert(var, tree->right);
 	return tree;
 }
@@ -26,12 +26,12 @@ void inorder(node* tree) {
 	if(tree == NULL)
 		return;
 	inorder(tree->left);
-	std::cout << tree->value << " ";
+	std::cout << tree->data << " ";
 	inorder(tree->right);
 }
 
 public:
-	BinarySearchTree() {
+	BST() {
 		root = NULL;
 	}
 
@@ -46,7 +46,7 @@ public:
 };
 
 int main() {
-	BinarySearchTree binaryTree;
+	BST binaryTree;
 
 	std::vector<int> testArray = {20,25,15,10,30};
 	for (int i=0;i<5;i++) {
