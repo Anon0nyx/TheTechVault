@@ -3,8 +3,8 @@
 using namespace std;
 
 int main() { // For this we start with the constant in the polynomial
-  int polyA[3] = {12,22,18}; // 1 + 3x + 2x^2
-  int polyB[3] = {27,8,16}; // 2 + 4x + x^2 
+  int polyA[3] = {5,2,3}; // 1 + 3x + 2x^2
+  int polyB[3] = {-1,1,1}; // 2 + 4x + x^2 
 
 	// Start by counting the size of our two coefficient arrays
 	int n = 0;

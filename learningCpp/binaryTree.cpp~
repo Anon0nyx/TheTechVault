@@ -1,28 +1,15 @@
 #include <iostream>
 #include <vector>
 
-struct node {
-	node* right;
-	node* left;
-	int value;
-};
-
 class BinarySearchTree {
-	node* root;
+	struct node {
+		node* right;
+		node* left;
+		int value;
+	};
 
-	node* insertNode(int x, node* root) {
-		if (root == NULL) {
-			root = new node;
-			root->value = x;
-			root->left = root->right = NULL;
-		} else if (x > root->value) {
-			root->right = insertNode(x, root->right);
-		} else if (x < root->value) {
-			root->left = insertNode(x, root->left);
-		}
-		return root;
-	}
-/*
+	node* root;
+	
 	node* buildTree(std::vector<int>& arr, int size, node* root) {
 		int midVal = arr[size/2];
 		std::vector<int> lowerHalf;
@@ -50,24 +37,15 @@ class BinarySearchTree {
 		} 
 		return root;
 	}
-*/
+
 	public:
 		BinarySearchTree() {
 			root = NULL;
 		}
-/*
+
 		void initTree(std::vector<int> arr, int size) {
 			root = buildTree(arr, size, root);
 			std::cout << root->value << std::endl;
-		}
-*/
-
-		void insert(int x) {
-				insertNode(x, root);
-		}
-
-		node* findRoot() {
-			return root;
 		}
 };
 
@@ -75,13 +53,7 @@ int main() {
 	std::vector<int> testArray = {1,2,3,4,5,6,7,8,9,10};
 	BinarySearchTree newTree;
 	
-	for (int i : testArray) {
-		newTree.insert(testArray[i]);
-	}
-
-	node newRoot = newTree.findRoot();
-
-	std::cout << newRoot->value << std::endl;
+	newTree.initTree(testArray, 10);
 
 	return 0;
 }

@@ -5,7 +5,7 @@ struct node {
 	node* right;
 	node* left;
 	int value;
-};
+}
 
 class BinarySearchTree {
 	node* root;
