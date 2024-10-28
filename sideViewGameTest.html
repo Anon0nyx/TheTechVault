@@ -17,26 +17,54 @@
         const canvas = document.getElementById('gameCanvas');
         const context = canvas.getContext('2d');
 
-        const tileSize = 32;
+        const tileSize = 5;
         const rows = canvas.height / tileSize;
         const cols = canvas.width / tileSize;
         const groundLevel = rows / 2;
 
-        let player = { x: 5, y: groundLevel - 1, width: tileSize, height: tileSize };
+        let player = { x: 5, y: groundLevel - 3, width: tileSize, height: tileSize * 3, dy: 0, isJumping: false };
         let keys = {};
 
         let grid = [];
         for (let row = 0; row < rows; row++) {
             grid[row] = [];
             for (let col = 0; col < cols; col++) {
-                grid[row][col] = (row >= groundLevel) ? 1 : 0;
+                if (row >= groundLevel) {
+                    grid[row][col] = 2; // Brown blocks
+                } else if (row === groundLevel - 1) {
+                    grid[row][col] = 1; // Green blocks
+                } else {
+                    grid[row][col] = 0; // Empty space
+                }
             }
+        }
+
+        // Create small bumps in the green layer
+        grid[groundLevel - 1][10] = 1;
+        grid[groundLevel - 1][11] = 1;
+        grid[groundLevel - 2][11] = 1;
+        grid[groundLevel - 1][20] = 1;
+        grid[groundLevel - 1][21] = 1;
+        grid[groundLevel - 2][21] = 1;
+        grid[groundLevel - 1][30] = 1;
+        grid[groundLevel - 1][31] = 1;
+        grid[groundLevel - 2][31] = 1;
+
+        function drawSky() {
+            const gradient = context.createLinearGradient(0, 0, 0, groundLevel * tileSize);
+            gradient.addColorStop(0, 'rgba(173, 216, 230, 0.5)'); // Light blue with opacity
+            gradient.addColorStop(1, 'rgba(173, 216, 230, 0)'); // Transparent
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, groundLevel * tileSize);
         }
 
         function drawGrid() {
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     if (grid[row][col] === 1) {
+                        context.fillStyle = 'green';
+                        context.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
+                    } else if (grid[row][col] === 2) {
                         context.fillStyle = 'brown';
                         context.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
                     }
@@ -51,6 +79,7 @@
 
         function update() {
             context.clearRect(0, 0, canvas.width, canvas.height);
+            drawSky();
             drawGrid();
             drawPlayer();
             requestAnimationFrame(update);
@@ -73,14 +102,40 @@
         });
 
         function handleMovement() {
-            if (keys['ArrowUp'] && player.y > 0) player.y--;
-            if (keys['ArrowDown'] && player.y < groundLevel - 1) player.y++;
-            if (keys['ArrowLeft'] && player.x > 0) player.x--;
-            if (keys['ArrowRight'] && player.x < cols - 1) player.x++;
+            if (keys['KeyS'] && !isColliding(player.x, player.y + 1)) player.y++;
+            if (keys['KeyA'] && !isColliding(player.x - 1, player.y)) player.x--;
+            if (keys['KeyD'] && !isColliding(player.x + 1, player.y)) player.x++;
+            if (keys['Space'] && !player.isJumping) {
+                player.dy = -1.5; // Adjusted jump strength for 1.5 blocks (7-8 pixels)
+                player.isJumping = true;
+            }
+        }
+
+        function applyGravity() {
+            if (player.isJumping) {
+                player.dy += 0.5; // Gravity strength
+                if (!isColliding(player.x, player.y + player.dy)) {
+                    player.y += player.dy;
+                } else {
+                    player.dy = 0;
+                    player.isJumping = false;
+                }
+            }
+        }
+
+        function isColliding(x, y) {
+            const bottomY = y + player.height / tileSize - 1;
+            for (let i = 0; i < player.height / tileSize; i++) {
+                if (grid[Math.floor(y + i)] && grid[Math.floor(y + i)][Math.floor(x)] !== 0) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         update();
         setInterval(handleMovement, 100); // Adjust the interval as needed
+        setInterval(applyGravity, 100); // Apply gravity at regular intervals
     </script>
 </body>
 </html>
