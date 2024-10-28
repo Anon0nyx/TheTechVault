@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple 2D Game</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const context = canvas.getContext('2d');
+
+        const tileSize = 32;
+        const rows = canvas.height / tileSize;
+        const cols = canvas.width / tileSize;
+        const groundLevel = rows / 2;
+
+        let player = { x: 5, y: groundLevel - 1, width: tileSize, height: tileSize };
+        let keys = {};
+
+        let grid = [];
+        for (let row = 0; row < rows; row++) {
+            grid[row] = [];
+            for (let col = 0; col < cols; col++) {
+                grid[row][col] = (row >= groundLevel) ? 1 : 0;
+            }
+        }
+
+        function drawGrid() {
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    if (grid[row][col] === 1) {
+                        context.fillStyle = 'brown';
+                        context.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
+                    }
+                }
+            }
+        }
+
+        function drawPlayer() {
+            context.fillStyle = 'blue';
+            context.fillRect(player.x * tileSize, player.y * tileSize, player.width, player.height);
+        }
+
+        function update() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+            drawPlayer();
+            requestAnimationFrame(update);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+
+        canvas.addEventListener('click', (e) => {
+            const x = Math.floor(e.offsetX / tileSize);
+            const y = Math.floor(e.offsetY / tileSize);
+            if (grid[y] && grid[y][x] === 1) {
+                grid[y][x] = 0;
+            }
+        });
+
+        function handleMovement() {
+            if (keys['ArrowUp'] && player.y > 0) player.y--;
+            if (keys['ArrowDown'] && player.y < groundLevel - 1) player.y++;
+            if (keys['ArrowLeft'] && player.x > 0) player.x--;
+            if (keys['ArrowRight'] && player.x < cols - 1) player.x++;
+        }
+
+        update();
+        setInterval(handleMovement, 100); // Adjust the interval as needed
+    </script>
+</body>
+</html>
